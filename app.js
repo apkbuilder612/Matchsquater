@@ -163,7 +163,7 @@ async function renderHome(){
     <div class="auth-hero" style="padding:18px 0 6px">
       <img src="icon-192.png" alt="">
       <h2>Match Squater</h2>
-      <p class="muted">Ku biir tartamada eFootball & FC Mobile, ku guuleyso lacag!</p>
+      <p class="muted">Ku biir tartamada eFootball & FC Mobile — 🆓 Bilaash 100%!</p>
     </div>
     <div class="section-title">Tartamada socda</div>
     <div id="homeList"></div>
@@ -182,7 +182,7 @@ function tournamentCard(t, count){
       <h3>${escapeHtml(t.title)}</h3>
       <span class="pill ${t.status}">${statusLabel(t.status)}</span>
     </div>
-    <div class="muted">${gameLabel(t.game)} · Fee: ${money(t.entry_fee)}</div>
+    <div class="muted">${gameLabel(t.game)} · 🆓 Bilaash</div>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
       <div class="progress-label"><span>${count}/${t.target_players} tartame</span><span>Harsan: ${Math.max(0,t.target_players-count)}</span></div>
@@ -214,7 +214,6 @@ async function renderTournamentDetail(id){
   const { data: countRow } = await sb.from("tournament_counts").select("registered_count").eq("tournament_id", id).maybeSingle();
   const count = countRow ? countRow.registered_count : 0;
   const pct = t.target_players ? Math.min(100, Math.round(count/t.target_players*100)) : 0;
-  const prize = prizeBreakdown(t, count);
 
   let myReg = null;
   if (CURRENT_USER){
@@ -229,18 +228,13 @@ async function renderTournamentDetail(id){
   $app().innerHTML = `
     <div class="card">
       <div class="row"><h3 style="font-size:19px">${escapeHtml(t.title)}</h3><span class="pill ${t.status}">${statusLabel(t.status)}</span></div>
-      <div class="muted">${gameLabel(t.game)} · Fee: ${money(t.entry_fee)} · Bar-goob: ${count}/${t.target_players}</div>
+      <div class="muted">${gameLabel(t.game)} · 🆓 Bilaash · Bar-goob: ${count}/${t.target_players}</div>
       ${t.announcement ? `<p style="margin:10px 0 0">${escapeHtml(t.announcement)}</p>` : ""}
       <div class="progress-wrap">
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
         <div class="progress-label"><span>${count}/${t.target_players} tartame</span><span>Harsan: ${Math.max(0,t.target_players-count)}</span></div>
       </div>
-      <div class="prize-grid">
-        <div class="prize-box"><div class="amt">${money(prize.first)}</div><div class="lbl">🥇 1aad (${t.split_first}%)</div></div>
-        <div class="prize-box"><div class="amt">${money(prize.second)}</div><div class="lbl">🥈 2aad (${t.split_second}%)</div></div>
-        <div class="prize-box"><div class="amt">${money(prize.third)}</div><div class="lbl">🥉 3aad (${t.split_third}%)</div></div>
-      </div>
-      <div class="muted" style="margin-top:8px;font-size:11.5px">Wadarta: ${money(prize.pool)} · Fee-ga appka (${t.fee_percent}%): ${money(prize.fee)}</div>
+      <div class="muted" style="margin-top:10px;font-size:12px">🏆 Abaalmarinta (prize) haddii la bixiyo, waxaa bixinaya admin-ka app-ka — lacag lagama qaado tartamayaasha.</div>
       <div style="margin-top:14px">
         ${registerButtonHtml(t, myReg, count)}
       </div>
@@ -255,7 +249,7 @@ async function renderTournamentDetail(id){
 function registerButtonHtml(t, myReg, count){
   if (myReg){
     const paid = myReg.payment_status === "paid";
-    return `<div class="row"><span class="pill ${paid?'open':'full'}">${paid?'✅ Lacagta waa la xaqiijiyay':'⏳ Sugaya xaqiijinta lacagta'}</span></div>
+    return `<div class="row"><span class="pill ${paid?'open':'full'}">${paid?'✅ Diiwaan gelintu waa xaqiijisan tahay':'⏳ Sugaya xaqiijinta admin-ka'}</span></div>
     <div class="muted" style="margin-top:6px">Waad ku diiwaan gashan tahay tartankan (${escapeHtml(myReg.player_tag||"")}).</div>`;
   }
   if (!CURRENT_USER){
@@ -264,7 +258,7 @@ function registerButtonHtml(t, myReg, count){
   if (t.status !== "open" || count >= t.target_players){
     return `<button class="btn btn-outline" disabled>Diiwaan gelintu way xidhan tahay</button>`;
   }
-  return `<button class="btn btn-gold" id="regBtn">📝 Ku Biir Tartanka — ${money(t.entry_fee)}</button>`;
+  return `<button class="btn btn-gold" id="regBtn">📝 Ku Biir Tartanka — 🆓 Bilaash</button>`;
 }
 
 function renderGroupsSection(groups, members, results){
@@ -291,9 +285,9 @@ function openRegisterModal(t){
     <div class="modal-sheet">
       <button class="close-x" id="mClose">✕</button>
       <h3>Diiwaan Gelinta — ${escapeHtml(t.title)}</h3>
-      <p class="muted">Fee-ga tartankan waa ${money(t.entry_fee)}. Fadlan buuxi macluumaadkaaga si sax ah.</p>
+      <p class="muted">🆓 Tartankan waa bilaash — lacag lagama rabo. Fadlan buuxi macluumaadkaaga si sax ah.</p>
       <div class="field"><label>Magaca oo saddexan (Full Name)</label><input id="rFullName" placeholder="Tusaale: Khalid Cabdullahi Xasan"></div>
-      <div class="field"><label>Lambarka aad lacagta ka soo dirayso</label><input id="rPhone" placeholder="+252 6xxxxxxxx" type="tel"></div>
+      <div class="field"><label>Lambarka taleefanka (xiriirka)</label><input id="rPhone" placeholder="+252 6xxxxxxxx" type="tel"></div>
       <div class="field"><label>Player / Gamer tag (magaca lagaaga arki doono kuwa kale)</label><input id="rTag" placeholder="Tusaale: Khalid_FC"></div>
       <button class="btn btn-gold" id="rSubmit">Xaqiiji Diiwaan Gelinta</button>
     </div>`;
@@ -395,7 +389,7 @@ async function renderAccount(){
   box.innerHTML = regs.map(r => `
     <a href="#/tournament/${r.tournament_id}" class="card" style="display:block">
       <div class="row"><strong>${escapeHtml(r.tournaments ? r.tournaments.title : "")}</strong>
-      <span class="pill ${r.payment_status==='paid'?'open':'full'}">${r.payment_status==='paid'?'Paid':'Pending'}</span></div>
+      <span class="pill ${r.payment_status==='paid'?'open':'full'}">${r.payment_status==='paid'?'Xaqiijisan':'Sugaya'}</span></div>
       <div class="muted">Player tag: ${escapeHtml(r.player_tag||"-")}</div>
     </a>
   `).join("");
@@ -418,18 +412,8 @@ async function renderAdmin(){
       <div class="field"><label>Game-ga</label>
         <select id="nGame"><option value="efootball">eFootball</option><option value="fc_mobile">FC Mobile</option></select>
       </div>
-      <div class="row" style="gap:10px">
-        <div class="field" style="flex:1"><label>Entry Fee ($)</label><input id="nFee" type="number" value="1" min="0" step="0.5"></div>
-        <div class="field" style="flex:1"><label>Target Players</label><input id="nTarget" type="number" value="40" min="6" step="1"></div>
-      </div>
-      <div class="row" style="gap:10px">
-        <div class="field" style="flex:1"><label>App Fee %</label><input id="nFeePct" type="number" value="5" min="0" max="100"></div>
-        <div class="field" style="flex:1"><label>1aad %</label><input id="nS1" type="number" value="65"></div>
-      </div>
-      <div class="row" style="gap:10px">
-        <div class="field" style="flex:1"><label>2aad %</label><input id="nS2" type="number" value="20"></div>
-        <div class="field" style="flex:1"><label>3aad %</label><input id="nS3" type="number" value="10"></div>
-      </div>
+      <div class="field"><label>Target Players</label><input id="nTarget" type="number" value="40" min="6" step="1"></div>
+      <div class="muted" style="margin:-4px 0 12px;font-size:12px">🆓 Tartankan wuxuu noqonayaa bilaash — lacag lagama rabo tartamayaasha.</div>
       <div class="field"><label>Announcement (ikhtiyaari)</label><textarea id="nAnn" rows="2" placeholder="Faahfaahin dheeraad ah..."></textarea></div>
       <button class="btn btn-gold" id="createTBtn">➕ Samee Tartan</button>
     </div>
@@ -438,7 +422,7 @@ async function renderAdmin(){
     <div id="adminTList">${tournaments.map(t => `
       <a href="#/admin/tournament/${t.id}" class="card" style="display:block">
         <div class="row"><h3>${escapeHtml(t.title)}</h3><span class="pill ${t.status}">${statusLabel(t.status)}</span></div>
-        <div class="muted">${gameLabel(t.game)} · ${counts[t.id]||0}/${t.target_players} tartame · Fee ${money(t.entry_fee)}</div>
+        <div class="muted">${gameLabel(t.game)} · ${counts[t.id]||0}/${t.target_players} tartame · 🆓 Bilaash</div>
       </a>`).join("") || '<div class="empty-state">Wali ma aadan samayn tartan.</div>'}
     </div>
 
@@ -457,12 +441,12 @@ async function renderAdmin(){
     const payload = {
       title,
       game: document.getElementById("nGame").value,
-      entry_fee: parseFloat(document.getElementById("nFee").value)||1,
+      entry_fee: 0,
       target_players: parseInt(document.getElementById("nTarget").value)||40,
-      fee_percent: parseFloat(document.getElementById("nFeePct").value)||5,
-      split_first: parseFloat(document.getElementById("nS1").value)||65,
-      split_second: parseFloat(document.getElementById("nS2").value)||20,
-      split_third: parseFloat(document.getElementById("nS3").value)||10,
+      fee_percent: 0,
+      split_first: 0,
+      split_second: 0,
+      split_third: 0,
       announcement: document.getElementById("nAnn").value.trim() || null,
       created_by: CURRENT_USER.email,
       status: "open"
@@ -511,7 +495,7 @@ async function renderAdminTournament(id){
     <a href="#/admin" class="muted">← Dib ugu noqo Admin</a>
     <div class="card" style="margin-top:10px">
       <div class="row"><h3>${escapeHtml(t.title)}</h3><span class="pill ${t.status}">${statusLabel(t.status)}</span></div>
-      <div class="muted">${gameLabel(t.game)} · Fee ${money(t.entry_fee)} · ${regs.length}/${t.target_players}</div>
+      <div class="muted">${gameLabel(t.game)} · 🆓 Bilaash · ${regs.length}/${t.target_players}</div>
       <div class="field" style="margin-top:12px"><label>Beddel Status</label>
         <select id="statusSel">
           ${["open","full","live","completed"].map(s=>`<option value="${s}" ${t.status===s?"selected":""}>${statusLabel(s)}</option>`).join("")}
@@ -524,12 +508,12 @@ async function renderAdminTournament(id){
     <div class="section-title">Diiwaan gelayaasha (${regs.length})</div>
     <div class="card table-wrap">
       <table>
-        <tr><th>Magaca</th><th>Lambarka</th><th>Tag</th><th>Lacag</th><th></th></tr>
+        <tr><th>Magaca</th><th>Lambarka</th><th>Tag</th><th>Xaalada</th><th></th></tr>
         ${regs.map(r=>`<tr>
           <td>${escapeHtml(r.full_name)}</td>
           <td>${escapeHtml(r.phone_number)}</td>
           <td>${escapeHtml(r.player_tag||"-")}</td>
-          <td><button class="btn btn-sm ${r.payment_status==='paid'?'btn-outline':'btn-gold'}" data-toggle-pay="${r.id}" data-cur="${r.payment_status}">${r.payment_status==='paid'?'Paid ✓':'Mark Paid'}</button></td>
+          <td><button class="btn btn-sm ${r.payment_status==='paid'?'btn-outline':'btn-gold'}" data-toggle-pay="${r.id}" data-cur="${r.payment_status}">${r.payment_status==='paid'?'Xaqiijisan ✓':'Xaqiiji'}</button></td>
           <td><button class="btn btn-sm btn-danger" data-del-reg="${r.id}">✕</button></td>
         </tr>`).join("")}
       </table>
