@@ -1,0 +1,13 @@
+{
+  "name": "match-squater",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Match Squater tournament app",
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
