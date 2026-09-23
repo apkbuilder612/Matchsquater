@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Match Squater</title>
+<meta name="description" content="Match Squater - app-ka tartamada efootball iyo FC Mobile">
+<meta name="theme-color" content="#0d1117">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Match Squater">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand" onclick="location.hash='#/home'">
+    <img src="icon-192.png" alt="Match Squater" class="brand-logo">
+    <span>Match Squater</span>
+  </div>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
+</header>
+
+<nav class="sidenav" id="sideNav">
+  <a href="#/home" class="nav-link">🏠 Home</a>
+  <a href="#/tournaments" class="nav-link">🏆 Tartamada</a>
+  <a href="#/live" class="nav-link">🔴 Live</a>
+  <a href="#/admin" class="nav-link" id="adminNavLink" style="display:none">⚙️ Admin</a>
+  <a href="#/account" class="nav-link">👤 Account-kayga</a>
+  <div class="nav-sep"></div>
+  <button class="nav-link" id="navAuthBtn">Login</button>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<main id="app" class="app-main"></main>
+
+<div id="toast" class="toast"></div>
+
+<footer class="bottomnav">
+  <a href="#/home" class="bn-item"><span>🏠</span><small>Home</small></a>
+  <a href="#/tournaments" class="bn-item"><span>🏆</span><small>Tartamada</small></a>
+  <a href="#/live" class="bn-item"><span>🔴</span><small>Live</small></a>
+  <a href="#/account" class="bn-item"><span>👤</span><small>Account</small></a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(console.error);
+  });
+}
+</script>
+</body>
+</html>
