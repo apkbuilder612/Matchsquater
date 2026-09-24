@@ -21,7 +21,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.9
+          gradle-version: 8.14.4
 
       - name: Build debug APK
         run: gradle assembleDebug --stacktrace --console=plain > build-log.txt 2>&1 || echo "BUILD_FAILED=1" >> $GITHUB_ENV
