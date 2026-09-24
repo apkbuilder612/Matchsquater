@@ -29,9 +29,9 @@ jobs:
       - name: Show error summary if failed
         if: env.BUILD_FAILED == '1'
         run: |
-          echo "## ❌ Build Error (last 60 lines)" >> $GITHUB_STEP_SUMMARY
+          echo "## ❌ Build Error" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 60 build-log.txt >> $GITHUB_STEP_SUMMARY
+          awk '/FAILURE: Build failed/{found=1} found' build-log.txt | head -n 80 >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           exit 1
 
